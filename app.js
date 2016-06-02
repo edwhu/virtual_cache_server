@@ -38,8 +38,9 @@ app.get('/download', (req, res) => {
 
 });
 app.use('/', express.static(path.join(__dirname, 'public')));
-app.listen(8080, () => {
-  console.log('Example app listening on port 8080!');
+let port = process.env.port || 3000;
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`);
 });
 
 //promise version of fs.stat
