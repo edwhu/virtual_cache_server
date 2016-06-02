@@ -6,7 +6,7 @@ const VIDEO = "jellyfish-3-mbps-hd-h264.mkv";
 const DATA = "cxnData.txt";
 const FILESIZE = 11202628;
 
-fs.writeFileSync(DATA,'');
+fs.writeFileSync(`${Date.now()}_${DATA}`,'');
 //let connections_set = new Set();
 app.get('/download', (req, res) => {
   console.log('a connection!');
