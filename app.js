@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const VIDEO = "jellyfish-3-mbps-hd-h264.mkv";
-
+const DATA = "cxnData.txt"
 
 let connections_set = new Set();
 app.get('/', (req, res) => {
@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
   if(! (connections_set.has(req.headers)) ) {
     connections_set.add(req.headers);
     const headerData = `Connnection:\n ${JSON.stringify(req.headers,null,4)}\n`;
-    fs.appendFile('cxnData.txt', headerData, err => {
+    fs.appendFile(DATA, headerData, err => {
     if(err) return console.log(err);
   });
   }
