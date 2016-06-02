@@ -40,7 +40,7 @@ app.get('/download', (req, res) => {
 });
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`Example app listening on port ${port}!`);
+  console.log(`Example app listening on port ${process.env.PORT || 3000}!`);
 });
 
 //promise version of fs.stat
