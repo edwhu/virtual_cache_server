@@ -4,14 +4,16 @@
   "description": "test server",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js"
   },
   "author": "ed",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.1",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "md5-file": "^3.1.0"
   },
   "engines": {
-  "node": "6.2.0"
+    "node": "6.2.0"
   }
 }

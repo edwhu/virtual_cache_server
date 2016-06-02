@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>VirtualCache Test</title>
-    <meta charset="utf-8" />
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <a id="download" href="/download">Click me</a>
-  </body>
+<head>
+  <title>VirtualCache Test</title>
+  <meta charset="utf-8" />
+  <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+</head>
+<body>
+  <a id="download" href="/download">Click me</a>
+  <form>
+    Your name:<br>
+    <input id="namefield" type="text" name="firstname" value="Mickey"><br>
+    <button id="name">submit</button>
+  </form>
+  <script>
+  $(document).ready(function(){
+    $('#name').click(function(e){
+      e.preventDefault();
+      console.log('text: ', $('#namefield').val());
+      $.ajax('/names', {
+        data:{name:$('#namefield').val()},
+        method:'POST',
+        success: function(data){
+          console.log("success");
+        }
+      });
+    });
+  });
+  </script>
+</body>
 </html>

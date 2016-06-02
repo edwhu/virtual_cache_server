@@ -1,16 +1,30 @@
 'use strict'
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const md5File = require('md5-file');
 const app = express();
 const fs = require('fs');
+
 const VIDEO = "jellyfish-3-mbps-hd-h264.mkv";
 const DATA = "cxnData.txt";
 const FILESIZE = 11202628;
+const HASH = 'hash.txt';
 
+md5File(`./${VIDEO}`, (err,hash) => {
+  console.log(hash);
+  fs.writeFile(HASH, hash, err => {
+    if(err) return console.log(err);
+  });
+});
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.use(bodyParser.json());
 fs.writeFileSync(`${DATA}`,'');
 //let connections_set = new Set();
 app.get('/download', (req, res) => {
-  console.log('a connection!');
   //if(! (connections_set.has(req.headers)) ) {
   //  connections_set.add(req.headers);
     const headerData = `Connnection:\n ${JSON.stringify(req.headers,null,4)}\n`;
@@ -18,14 +32,6 @@ app.get('/download', (req, res) => {
     if(err) return console.log(err);
     });
   //}
-  const options = {
-    root: __dirname,
-    dotfiles: 'deny',
-    headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-    }
-  };
   let time = Date.now();
   res.download(`./${VIDEO}`,VIDEO, err => {
     time = Date.now() - time;
@@ -36,9 +42,14 @@ app.get('/download', (req, res) => {
       if(err) return console.log(err);
     });
   });
-
 });
-app.use('/', express.static(path.join(__dirname, 'public')));
+
+let nameSet = new Set();
+app.post('/names', (req, res) => {
+  nameSet.add(req.body.name);
+  console.log(`there are ${nameSet.size} unique names`);
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}!`);
 });
