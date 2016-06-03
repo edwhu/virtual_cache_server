@@ -66,6 +66,6 @@ app.post('/names', (req, res) => {
   console.log(`there are ${nameSet.size} unique names`);
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000,'0.0.0.0',() => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}!`);
 });
