@@ -51,7 +51,7 @@ app.get('/download', (req, res) => {
     time/=1000; //convert to seconds.
     console.log(`time elapsed: ${time} seconds`);
     let ratio = (FILESIZE/1000000)/time;
-    connections_map.set(currentDevice, {headers:req.headers, filesize:FILESIZE,time:time,ratio:ratio});
+    connections_map.set(currentDevice, { filesize:FILESIZE,time:time,ratio:ratio});
     //populate file with map async
     connections_map.forEach( (v,k) => {
       const cxnData = `\nConnection:\n ${JSON.stringify(k,null,4)}\nData:${JSON.stringify(v,null,4)}\n`;
