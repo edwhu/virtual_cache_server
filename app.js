@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const VIDEO = "jellyfish-3-mbps-hd-h264.mkv";
 const DATA = "cxnData.txt";
-const FILESIZE = 11202628;
+const FILESIZE = fs.statSync(VIDEO).size;
 const HASH = 'hash.txt';
 
 md5File(`./${VIDEO}`, (err,hash) => {
@@ -22,24 +22,40 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
-fs.writeFileSync(`${DATA}`,'');
+fs.writeFileSync(DATA,'');
 //let connections_set = new Set();
+let connections_map = new Map();
 app.get('/download', (req, res) => {
-  //if(! (connections_set.has(req.headers)) ) {
-  //  connections_set.add(req.headers);
-    const headerData = `Connnection:\n ${JSON.stringify(req.headers,null,4)}\n`;
-    fs.appendFile(DATA, headerData, err => {
-    if(err) return console.log(err);
-    });
-  //}
+  // //if(! (connections_set.has(req.headers)) ) {
+  // //  connections_set.add(req.headers);
+  //   const headerData = `Connnection:\n ${JSON.stringify(req.headers,null,4)}\n`;
+  //   fs.appendFile(DATA, headerData, err => {
+  //   if(err) return console.log(err);
+  //   });
+  // //}
+  // let time = Date.now();
+  // res.download(`./${VIDEO}`,VIDEO, err => {
+  //   time = Date.now() - time;
+  //   time/=1000; //convert to seconds.
+  //   console.log(`time elapsed: ${time} seconds`);
+  //   let ratio = (FILESIZE/1000000)/time;
+  //   fs.appendFile(DATA, `ratio:\n${ratio} mb/s\n`, err => {
+  //     if(err) return console.log(err);
+  //   });
+  // });
+  let currentDevice = req.headers['user-agent'];
+  //calculate the ratio
   let time = Date.now();
-  res.download(`./${VIDEO}`,VIDEO, err => {
+  res.download(`./${VIDEO}`, VIDEO, err => {
     time = Date.now() - time;
     time/=1000; //convert to seconds.
     console.log(`time elapsed: ${time} seconds`);
     let ratio = (FILESIZE/1000000)/time;
-    fs.appendFile(DATA, `ratio:\n${ratio} mb/s\n`, err => {
-      if(err) return console.log(err);
+    connections_map.set(currentDevice, {headers:req.headers, filesize:FILESIZE,time:time,ratio:ratio});
+    //populate file with map async
+    connections_map.forEach( (v,k) => {
+      const cxnData = `\nConnection:\n ${JSON.stringify(k,null,4)}\nData:${JSON.stringify(v,null,4)}\n`;
+      fs.writeFile(DATA, cxnData, err => {if(err) return console.log(err);});
     });
   });
 });
@@ -53,13 +69,3 @@ app.post('/names', (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}!`);
 });
-
-//promise version of fs.stat
-// const fileSize = file => {
-//   return new Promise (( resolve, reject ) => {
-//     fs.stat(file, (err, stat) => {
-//       if(err) return reject(err);
-//       resolve(stat.size);
-//     });
-//   });
-// }
