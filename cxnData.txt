@@ -1,0 +1,18 @@
+
+Connection:
+ "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36"
+Data:{
+    "headers": {
+        "host": "localhost:3000",
+        "connection": "keep-alive",
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "referer": "http://localhost:3000/",
+        "accept-encoding": "gzip, deflate, sdch",
+        "accept-language": "en-US,en;q=0.8"
+    },
+    "filesize": 11202628,
+    "time": 0.122,
+    "ratio": 91.82481967213116
+}
