@@ -40,7 +40,6 @@ app.get('/download', (req, res) => {
 let nameSet = new Set();
 app.post('/names', (req, res) => {
   nameSet.add(req.body.name);
-  console.log(`there are ${nameSet.size} unique names`);
 });
 
 app.get('/logs', (req, res) => {
