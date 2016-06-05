@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 md5File(`./${VIDEO}`, (err,hash) => {
-  let hash_data = {name:VIDEO, hash:hash}
+  let hash_data = JSON.stringify({name:VIDEO, hash:hash});
   fs.writeFile(HASH, hash_data);
 });
 
