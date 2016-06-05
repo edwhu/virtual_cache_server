@@ -55,7 +55,7 @@ app.get('/download', (req, res) => {
     //populate file with map async
     connections_map.forEach( (v,k) => {
       const cxnData = `\nConnection:\n ${JSON.stringify(k,null,4)}\nData:${JSON.stringify(v,null,4)}\n`;
-      fs.writeFile(DATA, cxnData, err => {if(err) return console.log(err);});
+      fs.writeFileSync(DATA, cxnData);
     });
   });
 });
