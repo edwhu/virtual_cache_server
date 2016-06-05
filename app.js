@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 'use strict'
 const express = require('express');
 const path = require('path');
@@ -45,8 +46,8 @@ app.post('/names', (req, res) => {
 app.get('/logs', (req, res) => {
   //populate file with map async
   connections_map.forEach( (v,k) => {
-    const cxnData = `\nConnection:\n ${JSON.stringify(k,null,4)}\nData:${JSON.stringify(v,null,4)}\n`;
-    fs.appendFileSync(DATA, cxnData);
+    const cxnData = {Connection:k, Data:v};
+    fs.appendFileSync(DATA, JSON.stringify(cxnData,null,4));
   });
   res.download(`./${DATA}`, `${Date.now()}_log.txt`);
 });
