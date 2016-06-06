@@ -7,14 +7,14 @@ const md5File = require('md5-file');
 const app = express();
 const fs = require('fs');
 
-const VIDEO = "jellyfish-3-mbps-hd-h264.mkv";
-const DATA = "cxnData.txt";
+const VIDEO = 'jellyfish-3-mbps-hd-h264.mkv';
+const DATA = 'cxnData.txt';
 const FILESIZE = fs.statSync(VIDEO).size;
 const HASH = 'hash.txt';
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({
-	extended: true
+  extended: true
 }));
 app.use(bodyParser.json());
 
@@ -34,13 +34,17 @@ app.get('/download', (req, res) => {
     console.log(`time elapsed: ${time} seconds`);
     let ratio = (FILESIZE/1000000)/time;
     let now = new Date();
-    connections_map.set(currentDevice, {date:`${now.getMonth()}:${now.getDate()}:${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, filesize:FILESIZE,time:time,ratio:ratio});
+    connections_map.set(currentDevice,
+      {date:`${now.getMonth()}:${now.getDate()}:${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
+      filesize:FILESIZE,time:time,ratio:ratio});
+    res.end();
   });
 });
 
 let nameSet = new Set();
 app.post('/names', (req, res) => {
   nameSet.add(req.body.name);
+  res.end();
 });
 
 app.get('/logs', (req, res) => {
@@ -49,14 +53,14 @@ app.get('/logs', (req, res) => {
     const cxnData = {Connection:k, Data:v};
     fs.appendFileSync(DATA, JSON.stringify(cxnData,null,4));
   });
-  res.download(`./${DATA}`, `${Date.now()}_log.txt`);
+  res.download(`./${DATA}`, `${Date.now()}_log.txt`, err => res.end());
 });
 
-app.get('/hash', (req, res) => res.download(`./${HASH}`, 'hash.txt'));
+app.get('/hash', (req, res) => res.download(`./${HASH}`, 'hash.txt', err => res.end()));
 
 app.get('/erase', (req, res) => {
   connections_map.clear();
-  fs.writeFile(DATA,'');
+  fs.writeFile(DATA,'', err => res.end());
 });
 
 app.listen(process.env.PORT || 3000,'0.0.0.0',() => {
