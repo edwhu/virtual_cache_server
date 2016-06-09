@@ -47,6 +47,11 @@ app.post('/names', (req, res) => {
   res.end();
 });
 
+app.post('/logs', (req, res) => {
+  fs.appendFileSync(DATA, JSON.stringify(req, null, 4));
+  res.end();
+});
+
 app.get('/logs', (req, res) => {
   //populate file with map async
   connections_map.forEach( (v,k) => {
