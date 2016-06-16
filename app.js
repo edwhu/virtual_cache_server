@@ -35,10 +35,10 @@ let nameSet = new Set();
 //DB setup
 const db = mongoose.connection;
 const deviceSchema = mongoose.Schema({
-  name: String,
-  location: Array,
-  cache:[{name:String, size:Number}],
-  d2d:Number
+	name: String,
+	location: Array,
+	cache:[{name:String, size:Number}],
+	d2d:Number
 });
 deviceSchema.set('collection', 'devices')
 const Device = mongoose.model('Device', deviceSchema);
@@ -46,8 +46,8 @@ const Device = mongoose.model('Device', deviceSchema);
 mongoose.connect('mongodb://localhost:27017/virtualcache');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  // we're connected!
-  console.log("MongoDB connected");
+	// we're connected!
+	console.log("MongoDB connected");
 });
 
 //ROUTES
@@ -80,15 +80,15 @@ app.post('/names', (req, res) => {
 // });
 //Json version of logs
 app.post('/logs', (req, res) => {
-  res.end();
-  const device = new Device({
-    name: req.body.name,
-    location: req.body.location,
-    cache: req.body.cache,
-    d2d: req.body.d2d
-  });
-  console.log(req.body);
-  device.save().catch(err => console.error(err));
+	res.end();
+	const device = new Device({
+		name: req.body.name,
+		location: req.body.location,
+		cache: req.body.cache,
+		d2d: req.body.d2d
+	});
+	console.log(req.body);
+	device.save().catch(err => console.error(err));
 });
 
 app.get('/logs', (req, res) => {
