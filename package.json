@@ -1,22 +1,23 @@
 {
-	"name": "virtual_cache_server",
-	"version": "1.0.0",
-	"description": "test server",
-	"main": "app.js",
-	"scripts": {
-		"start": "node app.js"
-	},
-	"author": "ed",
-	"license": "MIT",
-	"dependencies": {
-		"bluebird": "^3.4.0",
-		"body-parser": "^1.15.1",
-		"express": "^4.13.4",
-		"md5-file": "^3.1.0",
-		"mongoose": "^4.5.0",
-		"multer": "^1.1.0"
-	},
-	"engines": {
-		"node": "6.2.0"
-	}
+  "name": "virtual_cache_server",
+  "version": "1.0.0",
+  "description": "test server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "ed",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.0",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.18",
+    "mongoose": "^4.5.0",
+    "mongoose-version": "^1.0.0",
+    "pug": "^2.0.0-beta3"
+  },
+  "engines": {
+    "node": "6.2.0"
+  }
 }
