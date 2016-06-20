@@ -10,10 +10,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');// Use bluebird
 const version = require('mongoose-version');
 
-//const VIDEO = 'jellyfish-3-mbps-hd-h264.mkv';
-//const DATA = 'cxnData.txt';
-//const FILESIZE = fs.statSync(VIDEO).size;
-
 //SETUP CODE
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'pug');
@@ -22,7 +18,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 let connections_map = new Map();
-//let nameSet = new Set();
 
 //DB setup
 const db = mongoose.connection;
@@ -58,28 +53,6 @@ app.get('/', function (req, res) {
 		.then(arr=>res.render('index',{dbCurrent:arr[0], dbHistory:arr[1]}));
 });
 
-// app.get('/download', (req, res) => {
-// 	let currentDevice = req.headers['user-agent'];
-// 	//calculate the ratio
-// 	let time = Date.now();
-// 	res.download(`./${VIDEO}`, VIDEO, err => {
-// 		time = Date.now() - time;
-// 		time/=1000; //convert to seconds.
-// 		console.log(`time elapsed: ${time} seconds`);
-// 		let ratio = (FILESIZE/1000000)/time;
-// 		let now = new Date();
-// 		connections_map.set(currentDevice,
-// 			{date:`${now.getMonth()}:${now.getDate()}:${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
-// 			filesize:FILESIZE,time:time,ratio:ratio});
-// 		res.end();
-// 	});
-// });
-
-// app.post('/names', (req, res) => {
-// 	nameSet.add(req.body.name);
-// 	res.end();
-// });
-
 //Json version of logs
 app.post('/logs', (req, res) => {
 	res.end();
@@ -97,20 +70,6 @@ app.post('/logs', (req, res) => {
 		}
 	});
 });
-
-// app.get('/logs', (req, res) => {
-// 	//populate file with map async
-// 	connections_map.forEach( (v,k) => {
-// 		const cxnData = {Connection:k, Data:v};
-// 		fs.appendFileSync(DATA, JSON.stringify(cxnData,null,4));
-// 	});
-// 	res.download(`./${DATA}`, `${Date.now()}_log.txt`, err => res.end());
-// });
-//
-// app.get('/erase', (req, res) => {
-// 	connections_map.clear();
-// 	fs.writeFile(DATA,'', err => res.end());
-// });
 
 app.get('/db', (req, res) => {
 	Device.find().then( docs => {
