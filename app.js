@@ -9,16 +9,33 @@ const mongoose = require('mongoose');
 const Promise = require('bluebird');
 mongoose.Promise = Promise;// Use bluebird
 const version = require('mongoose-version');
+
+const isDeveloping = process.env.NODE_ENV !== 'production';
 const MONGO_URL = 'mongodb://localhost:27017/virtualcache';
 
 //SETUP CODE
-app.use('/', express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'pug');
+app.use('/', express.static(path.join(__dirname, '')));
+//app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
-
+if(isDeveloping){
+	console.log('Development mode');
+	app.use(function (req, res, next) {
+	// Website you wish to allow to connect
+	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+	// Request methods you wish to allow
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	// Request headers you wish to allow
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	// Set to true if you need the website to include cookies in the requests sent
+	// to the API (e.g. in case you use sessions)
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	// Pass to next layer of middleware
+	next();
+	});
+}
 //DB setup
 const db = mongoose.connection;
 const locationSchema = mongoose.Schema({
@@ -58,15 +75,17 @@ MongoClient.connect(MONGO_URL, (err, database) => {
 });
 //ROUTES
 
-app.get('/', function (req, res) {
-	const currentDB_P = Device.find().exec();
+app.get('/db', function (req, res) {
+	console.log('/db requested');
+	const currentDB_P = Device.find().exec()
+
 	const history_P = virtual_cache
-	.collection('versions')
-	.find()
-	.toArray()
-	.then(data => JSON.stringify(data,null,4));
+		.collection('versions')
+		.find()
+		.toArray()
+
 	Promise.all([currentDB_P, history_P])
-	.then(arr => res.render('index',{dbCurrent:arr[0], dbHistory:arr[1]}));
+		.then(arr => res.status(201).send(arr));
 });
 
 //Json version of logs
@@ -113,5 +132,5 @@ app.post('/locsearch', (req,res) => {
 app.get('/erase', (req,res) => {
 	db.collection('versions').drop();
 	db.collection('devices').drop();
-	res.end();
+	res.status(200).end();
 });
