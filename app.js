@@ -96,12 +96,12 @@ app.post('/logs', (req, res) => {
 		if(result == null) {
 			const device = new Device(req.body);
 			device.save()
-			.then(doc => res.send(`created new ${doc.name}`))
+			.then(doc => res.status(201).end())
 			.catch(err => console.error(err));
 		} else {
 			Object.assign(result, req.body);
 			result.save()
-			.then(doc => res.send(`updated ${doc.name}`))
+			.then(doc => res.status(201).end())
 			.catch(err => console.error(err));
 		}
 	});
