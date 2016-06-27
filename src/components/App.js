@@ -5,11 +5,11 @@ import fetch from 'isomorphic-fetch'
 import TextAreas from './TextAreas.js'
 import SimpleMap from './SimpleMap.js'
 
-const API_URL = 'http://localhost:3000/db'
+// const API_URL = 'http://localhost:3000/db'
+const API_URL = require('../../env.js').API_URL;
 //this should get the Database information on load and then populate the
 //textareas and google map.
 class App extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
