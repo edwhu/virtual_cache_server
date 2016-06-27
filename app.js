@@ -11,8 +11,8 @@ mongoose.Promise = Promise;// Use bluebird
 const version = require('mongoose-version');
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
-const MONGO_URL = 'mongodb://localhost:27017/virtualcache';
-
+//const MONGO_URL = 'mongodb://localhost:27017/virtualcache';
+const MONGO_URL = require('./env.js').MONGO_URL;
 //SETUP CODE
 app.use('/', express.static(path.join(__dirname, '')));
 //app.set('view engine', 'pug');
@@ -132,5 +132,5 @@ app.post('/locsearch', (req,res) => {
 app.get('/erase', (req,res) => {
 	db.collection('versions').drop();
 	db.collection('devices').drop();
-	res.status(200).end();
+	res.status(200).redirect('/');
 });
